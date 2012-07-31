@@ -23,7 +23,7 @@ namespace Core.Extensions
                             parameters.Add(new KeyValuePair<string, object>(property.Name, val));
                         }
                     } else {
-                        parameters.Add(new KeyValuePair<string, object>(property.Name, property.GetValue(o, null)));
+                        parameters.Add(new KeyValuePair<string, object>(property.Name, value));
                     }
                 }
             }
