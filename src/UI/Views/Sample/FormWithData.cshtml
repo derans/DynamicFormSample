@@ -1,0 +1,60 @@
+﻿@using Core.Extensions
+@model Core.UI.Models.SampleForm
+
+@{
+    ViewBag.Title = "Form with Data Sample";
+}
+
+
+<h2>Dynamically Generated Form to Post without AJAX</h2>
+<p style="font-size: .8em;">@Html.ActionLink("Reset Form", "FormWithData")</p>
+
+<h3 style="margin-bottom: 0;">ID: @Model.ID</h3>
+<span class="footnote">ID will become 99 after clicking "Generate and Submit Form"</span>
+
+<p>@Html.ActionLink("Post Form", "FormWithData", "Sample", null, new { id = "generate_form_with_data_link" })</p>
+
+<div class="footnote">
+    <strong>Generated JS (obviously you can also view source)</strong><br/><br/>
+    function GenerateAndSubmitForm(action) {<br/>
+    <div style="margin-left: 20px;">
+    var body = $('body');<br/>
+    @Html.Raw(@Html.Encode("var form = $(\"<form method='post' action=\" + action + \"/>\");"))<br/>
+            @foreach(var param in Model.ToParameterList())
+            {
+                @Html.Raw(@Html.Encode("form.append($(\"<input type='hidden' name='" + param.Key + "' value='" + param.Value + "' />\"));"))<br/>
+            }
+            body.append(form);<br/>
+            form.submit();<br/>
+    </div>
+        }
+</div>
+
+<p><a href="@Url.Action("GetFormWithData")@Model.ToQueryString()">Get Form</a></p>
+<span class="footnote">
+<strong>Generated QueryString</strong><br/>
+@Model.ToQueryString()</span>
+
+@section JavaScript{
+    <script language="javascript" type="text/javascript">
+    $(function() {
+        $('#generate_form_with_data_link').click(function(e) {
+            e.preventDefault();
+
+            var url = $(this).attr('href');
+            GenerateAndSubmitForm(url);
+        });
+    });
+
+    function GenerateAndSubmitForm(action) {
+        var body = $('body');
+        var form = $("<form method='post' action=" + action + "/>");
+        @foreach(var param in Model.ToParameterList())
+        {
+            @Html.Raw("form.append($(\"<input type='hidden' name='" + @param.Key + "' value='" + @param.Value + "' />\"));")
+        }
+        body.append(form);
+        form.submit();
+    }
+    </script>
+}
