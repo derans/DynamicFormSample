@@ -3,20 +3,9 @@ using Core.UI.Models;
 
 namespace Core.UI.Controllers
 {
-    public class SampleController : BaseController
+    public class HomeController : Controller
     {
-        public ActionResult EmptyForm()
-        {
-            return View(new SampleForm());
-        }
-
-        [HttpPost]
-        public ActionResult EmptyForm(SampleForm form)
-        {
-            return View(form);
-        }
-
-        public ActionResult FormWithData()
+        public ActionResult Index()
         {
             var formWithData = new SampleForm
             {
@@ -33,11 +22,11 @@ namespace Core.UI.Controllers
         public ActionResult GetFormWithData(SampleForm form)
         {
             form.ID = 99;
-            return View("FormWithData", form);
+            return View("Index", form);
         }
 
         [HttpPost]
-        public ActionResult FormWithData(SampleForm form)
+        public ActionResult Index(SampleForm form)
         {
             form.ID = 99;
             return View(form);
